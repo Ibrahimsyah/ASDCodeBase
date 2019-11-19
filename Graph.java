@@ -38,17 +38,17 @@ public class Graph {
 
     public void cariJarakMin(int s, int e) {
         boolean[] isVisited = new boolean[jumlah];
-        ArrayList<Node> pathList = new ArrayList<>();
-        pathList.add(new Node(s, 0));
+        ArrayList<Integer> pathList = new ArrayList<>();
+        ArrayList<Node> pathWeight = new ArrayList<>();
+        ArrayList<Integer> minPath = new ArrayList<>();
+        pathWeight.add(new Node(s, 0));
         int min[] = new int[1];
         min[0] = Integer.MAX_VALUE;
-        jarakMin(s, e, isVisited, pathList, min);
-        for (int i : min) {
-            System.out.println(i);
-        }
+        jarakMin(s, e, isVisited, pathWeight, min, minPath);
+        System.out.println(minPath);
     }
 
-    public void jarakMin(int start, int end, boolean[] isVisited, List<Node> path, int[] min) {
+    public void jarakMin(int start, int end, boolean[] isVisited, List<Node> path, int[] min, List<Integer> minPath) {
         isVisited[start] = true;
         if (start == end) {
             int sum = 0;
@@ -57,6 +57,10 @@ public class Graph {
             }
             if (sum < min[0]) {
                 min[0] = sum;
+                minPath.removeAll(minPath);
+                for(Node n : path){
+                    minPath.add(n.data);
+                }
             }
             isVisited[start] = false;
             return;
@@ -65,7 +69,7 @@ public class Graph {
             if (!isVisited[n.data]) {
                 int i = n.data;
                 path.add(n);
-                jarakMin(i, end, isVisited, path, min);
+                jarakMin(i, end, isVisited, path, min, minPath);
                 path.remove(n);
             }
         }
